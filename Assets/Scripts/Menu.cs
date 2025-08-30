@@ -69,6 +69,7 @@ public class Menu : MonoBehaviour
     {
         FadeOutMenu(gameOverMenu);
         FadeInMenu(startMenu);
+        HealthManager.Instance.ResetHealth();
     }
 
     public void DisplayMenu(bool state, string menu)
