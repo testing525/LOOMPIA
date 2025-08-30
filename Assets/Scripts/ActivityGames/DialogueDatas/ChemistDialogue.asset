@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f6dd592c3da144e8bdf0735f00462d, type: 3}
+  m_Name: ChemistDialogue
+  m_EditorClassIdentifier: 
+  dialogues:
+  - "\u201CLet us start simple, Mix water and sugar to the Beaker and see what happens.\"
+    (E to Pick Up)"
+  - "\u201CHmmm\u2026 not all combinations react.\u201D"
+  - "\u201CTime to get fizzy! Combine vinegar with baking soda."
+  - " \u201CHas a bubbling reaction! Nice! That is a safe acid-base reaction.\u201D"
+  - "\u201CNow try mixing Hydrochloric Acid and\r\nSodium Hydroxide \u2013 but be
+    cautious! This one\u2019s strong!\u201D\r\n"
+  - " \u201CA heat is releasing\u2026 Great! That is neutralization!\u201D"
+  - "\u201CGreat Job! We are done here for now. You may exit the lab.\u201D"

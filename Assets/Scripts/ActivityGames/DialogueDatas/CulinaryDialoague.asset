@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f6dd592c3da144e8bdf0735f00462d, type: 3}
+  m_Name: CulinaryDialoague
+  m_EditorClassIdentifier: 
+  dialogues:
+  - '"It''s time to cook some pastas! First, add salt to that boiling pot!" (E to
+    Pick Up)'
+  - '"Nice work! Time to finally add the pasta!"'
+  - '"Pasta is cooked! Now put the tomato sauce on the pot!"'
+  - '"Well done young chef! Now we will handle the rest. You may exit."'
