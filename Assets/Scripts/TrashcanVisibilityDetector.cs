@@ -9,7 +9,7 @@ public class TrashcanVisibilityDetector : MonoBehaviour
 
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindAnyObjectByType<GameManager>();
 
         mainCam = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();

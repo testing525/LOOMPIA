@@ -26,7 +26,7 @@ public class SceneTransition : MonoBehaviour
 
     private void Start()
     {
-        
+        image.gameObject.SetActive(true);
     }
 
     public IEnumerator FadeIn()
@@ -54,6 +54,7 @@ public class SceneTransition : MonoBehaviour
     {
         rect.anchoredPosition = new Vector2(0f, 0f);
         Vector2 targetPos = new Vector2(-2579f, 0f);
+
 
         while (Vector2.Distance(rect.anchoredPosition, targetPos) > 0.1f)
         {

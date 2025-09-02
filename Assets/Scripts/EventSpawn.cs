@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class EventSpawn : MonoBehaviour
 {
+    [Header("Spawner Settings")]
     public Transform spawner;
     public GameObject eventPrefab;
     public Sprite[] sprites;
+    public float moveSpeed = 3f;
+    public float respawnDelay = 10f;
+    public float offScreenOffset = 2f; // how far outside before stopping
+
     private static List<string> dataDialogue = new List<string>()
     {
         "Healthy soil isn’t just good for your crops but also holds water, stores carbon from the air, and keeps farms alive.",
@@ -28,34 +32,43 @@ public class EventSpawn : MonoBehaviour
         "Rising heat dries farmlands. Plant trees and cut waste to cool our world!"
     };
 
-
-
     void Start()
     {
-        StartCoroutine(SpawnEvents());
+        GameObject newEvent = Instantiate(eventPrefab, spawner.position, spawner.rotation);
+        StartCoroutine(HandleEvent(newEvent));
     }
 
-    IEnumerator SpawnEvents()
+    IEnumerator HandleEvent(GameObject evt)
     {
+        SpriteRenderer eventSprite = evt.GetComponentInChildren<SpriteRenderer>();
+        TextMeshPro text = evt.GetComponentInChildren<TextMeshPro>();
+
+        Camera mainCam = Camera.main;
+        float screenLeft = mainCam.ViewportToWorldPoint(new Vector3(0, 0, mainCam.nearClipPlane)).x - offScreenOffset;
+
         while (true)
         {
-            Spawn();
-            yield return new WaitForSeconds(60f); 
+            eventSprite.sprite = sprites[Random.Range(0, sprites.Length)];
+            text.text = dataDialogue[Random.Range(0, dataDialogue.Count)];
+
+            evt.transform.position = spawner.position;
+
+            bool isMoving = true;
+
+            while (isMoving)
+            {
+                float objectSpeed = moveSpeed * GameSpeed.Instance.GetMultiplier();
+                evt.transform.Translate(Vector3.left * objectSpeed * Time.deltaTime);
+
+                if (evt.transform.position.x < screenLeft)
+                {
+                    isMoving = false;
+                }
+
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(respawnDelay);
         }
     }
-
-    void Spawn()
-    {
-        Instantiate(eventPrefab, spawner.position, spawner.rotation);
-
-        SpriteRenderer eventSprite = eventPrefab.GetComponentInChildren<SpriteRenderer>();
-        TextMeshPro text = eventPrefab.GetComponentInChildren<TextMeshPro>();
-        Sprite randomSprite = sprites[Random.Range(0, sprites.Length)];
-        eventSprite.sprite = randomSprite;
-
-        string randomText = dataDialogue[Random.Range(0, dataDialogue.Count)];
-        text.text = randomText;
-
-    }
-
 }

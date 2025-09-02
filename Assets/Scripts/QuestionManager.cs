@@ -72,7 +72,7 @@ public class QuestionManager : MonoBehaviour
             AudioManager.FireSFX(AudioManager.SFXSignal.Correct);
 
             timeManager.AddTime(5);
-            scoreManager.AddScore(); 
+            scoreManager.AddScore();
             DifficultyManager.CorrectAnswer();
             Button selectedButton = problemButtons[index];
             selectedButton.gameObject.SetActive(false);
@@ -89,19 +89,19 @@ public class QuestionManager : MonoBehaviour
                 Vector3 startWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
                 startWorldPos.z = 0f;
 
-                Vector3 targetWorldPos = solvedTrashcan.transform.position + Vector3.up * 0.6f;
+                Vector3 targetWorldPos = solvedTrashcan.transform.position + Vector3.up * 0.6f + Vector3.right * -1.3f;
 
 
-                flyerManager.OnFlyerFinished += (flyer) =>
+                flyerManager.SpawnAndMove(startWorldPos, targetWorldPos, 0.7f, 0.0f, (flyer) =>
                 {
                     if (trashcanComp != null) trashcanComp.Close();
                     StartCoroutine(FadeAndDestroy(solvedTrashcan, 0.5f, () =>
                     {
                         selectedButton.gameObject.SetActive(true);
                     }));
-                };
+                });
 
-                flyerManager.SpawnAndMove(startWorldPos, targetWorldPos, 0.7f);
+
             }
         }
         else
@@ -161,8 +161,7 @@ public class QuestionManager : MonoBehaviour
             while (elapsed < fadeTime)
             {
                 elapsed += Time.deltaTime;
-                sr.color = new Color(startColor.r, startColor.g, startColor.b,
-                                     Mathf.Lerp(startColor.a, 0f, elapsed / fadeTime));
+                sr.color = new Color(startColor.r, startColor.g, startColor.b, Mathf.Lerp(startColor.a, 0f, elapsed / fadeTime));
                 yield return null;
             }
         }
@@ -175,7 +174,10 @@ public class QuestionManager : MonoBehaviour
         Debug.Log("Problem canceled because trashcan exited the camera.");
 
         foreach (var btn in problemButtons)
+        {
             btn.gameObject.SetActive(false);
+
+        }
 
 
         StartCoroutine(TransitionManager.MoveUI(
@@ -190,7 +192,7 @@ public class QuestionManager : MonoBehaviour
                     }));
             }));
     }
- 
+
 
 
 }

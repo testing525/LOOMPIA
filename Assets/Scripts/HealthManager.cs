@@ -55,7 +55,7 @@ public class HealthManager : MonoBehaviour
         {
             if (timerManager == null)
             {
-                timerManager = FindObjectOfType<TimerManager>();
+                timerManager = FindAnyObjectByType<TimerManager>();
 
             }
 

@@ -312,7 +312,7 @@ public class GameManager : MonoBehaviour
 
         uiManager.HideAllUI();
 
-        FindObjectOfType<Menu>()?.DisplayMenu(true, "gameOverMenu");
+        FindAnyObjectByType<Menu>()?.DisplayMenu(true, "gameOverMenu");
 
     }
 

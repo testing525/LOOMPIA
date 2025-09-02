@@ -6,20 +6,20 @@ public class UIButtonFlyer : MonoBehaviour
 {
     [Header("References")]
     public GameObject flyerPrefab;
-    public event Action<GameObject> OnFlyerFinished;
 
 
-    public void SpawnAndMove(Vector3 startWorldPos, Vector3 targetWorldPos, float duration = 0.5f, float stayDuration = 0.7f)
+    public void SpawnAndMove(Vector3 startWorldPos, Vector3 targetWorldPos, float duration = 0.5f, float stayDuration = 0.7f, Action<GameObject> onFinished = null)
     {
         if (flyerPrefab == null) return;
 
         GameObject flyer = Instantiate(flyerPrefab, startWorldPos, Quaternion.identity);
-        flyer.transform.localScale = new Vector3(1f, 1f, 1f);
+        flyer.transform.localScale = Vector3.one;
 
-        StartCoroutine(MoveAndScale(flyer.transform, targetWorldPos, duration, stayDuration));
+        StartCoroutine(MoveAndScale(flyer.transform, targetWorldPos, duration, stayDuration, onFinished));
     }
 
-    private IEnumerator MoveAndScale(Transform obj, Vector3 targetPos, float duration, float stayDuration)
+
+    private IEnumerator MoveAndScale(Transform obj, Vector3 targetPos, float duration, float stayDuration, Action<GameObject> onFinished)
     {
         yield return new WaitForSeconds(stayDuration);
 
@@ -36,7 +36,6 @@ public class UIButtonFlyer : MonoBehaviour
             float t = elapsed / duration;
 
             obj.position = Vector3.Lerp(startPos, targetPos + offset, t);
-
             obj.localScale = Vector3.Lerp(startScale, endScale, t);
 
             yield return null;
@@ -44,10 +43,12 @@ public class UIButtonFlyer : MonoBehaviour
 
         obj.position = targetPos;
         obj.localScale = endScale;
-        OnFlyerFinished?.Invoke(obj.gameObject);
-        AudioManager.FireSFX(AudioManager.SFXSignal.TrashClose);
 
+        onFinished?.Invoke(obj.gameObject);
+        AudioManager.FireSFX(AudioManager.SFXSignal.TrashClose);
 
         Destroy(obj.gameObject);
     }
+
+
 }

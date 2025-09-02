@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 input = new Vector2(finalX, finalY).normalized;
 
         // Apply velocity
-        body.velocity = input * speed;
+        body.linearVelocity = input * speed;
 
         // Debug movement values
         if (mobileX != 0 || mobileY != 0)

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PickAndDrop : MonoBehaviour
 {
@@ -48,8 +47,8 @@ public class PickAndDrop : MonoBehaviour
 
         if (heldRb != null)
         {
-            heldRb.isKinematic = true;
-            heldRb.velocity = Vector2.zero;
+            heldRb.bodyType = RigidbodyType2D.Kinematic;
+            heldRb.linearVelocity = Vector2.zero;
         }
 
         PickupItem pickupData = item.GetComponent<PickupItem>();
@@ -77,7 +76,7 @@ public class PickAndDrop : MonoBehaviour
 
         if (heldRb != null)
         {
-            heldRb.isKinematic = false;
+            heldRb.bodyType = RigidbodyType2D.Kinematic;
         }
 
         PickupItem pickupData = heldItem.GetComponent<PickupItem>();
