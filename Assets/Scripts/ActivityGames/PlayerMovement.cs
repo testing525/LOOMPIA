@@ -61,6 +61,8 @@ public class PlayerMovement : MonoBehaviour
         // Flip player direction
         if (finalX != 0)
         {
+            if (speed <= 0) { return; }
+
             Vector3 scale = transform.localScale;
             scale.x = Mathf.Sign(finalX) * Mathf.Abs(scale.x);
             transform.localScale = scale;
@@ -69,17 +71,18 @@ public class PlayerMovement : MonoBehaviour
         // Animator
         if (input.magnitude > 0)
         {
+            if (speed <= 0) { return; }
             animator.SetBool("isRunning", true);
             transform.localScale = new Vector3(Mathf.Sign(transform.localScale.x) * 0.6f, 0.6f, 0.6f);
         }
         else
         {
+            if (speed <= 0) { return; }
             animator.SetBool("isRunning", false);
             transform.localScale = new Vector3(Mathf.Sign(transform.localScale.x) * 0.45f, 0.45f, 0.45f);
         }
     }
 
-    // --- Mobile button movement handlers ---
     public void MoveUp(bool pressed)
     {
         mobileY = pressed ? 1f : 0f;
@@ -104,18 +107,15 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("MoveRight pressed=" + pressed);
     }
 
-    // Utility to add PointerDown/PointerUp events to buttons
     private void AddEventTriggers(Button button, System.Action onDown, System.Action onUp)
     {
         EventTrigger trigger = button.gameObject.GetComponent<EventTrigger>();
         if (trigger == null) trigger = button.gameObject.AddComponent<EventTrigger>();
 
-        // PointerDown
         EventTrigger.Entry entryDown = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
         entryDown.callback.AddListener((data) => { onDown(); });
         trigger.triggers.Add(entryDown);
 
-        // PointerUp
         EventTrigger.Entry entryUp = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
         entryUp.callback.AddListener((data) => { onUp(); });
         trigger.triggers.Add(entryUp);
