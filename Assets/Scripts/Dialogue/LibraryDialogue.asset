@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a41c883ae259d40b242e6dff23f117, type: 3}
+  m_Name: LibraryDialogue
+  m_EditorClassIdentifier: 
+  lines:
+  - "You\u2019ve done such a wonderful job! "
+  - Thank you again for helping me organize the shelves.
+  - The library feels alive again, even if only a little.
+  - "Please, come back here anytime if you\u2019d like to read. You\u2019re always
+    welcome."

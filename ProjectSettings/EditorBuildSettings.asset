@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/MainGame.unity
+    guid: 3fc8acdd13e6c734bafef6554d6fdbcd
   - enabled: 1
     path: Assets/Scenes/Clinic.unity
     guid: 63c6e28113c043e488eb38c222adc230
   - enabled: 1
     path: Assets/Scenes/Chemistry.unity
     guid: 72d1d87b96cea124184c2ae7909bfaab
+  - enabled: 1
+    path: Assets/Scenes/Beach.unity
+    guid: 146bc1e529b1110499a62726dd79d3d6
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 87b64c0032223d94881c1e28d55a9fac, type: 2}
   m_UseUCBPForAssetBundles: 0

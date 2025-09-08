@@ -49,6 +49,10 @@ public class ClinicBed : MonoBehaviour
             {
                 interactionCoroutine = StartCoroutine(FillAndConfirm(playerHandler));
             }
+            else
+            {
+                DialogueManager.Instance.Chat("That is not the right tool for this kind of sample.");
+            }
         }
     }
 

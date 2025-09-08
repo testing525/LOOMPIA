@@ -8,7 +8,6 @@ public class CulinaryObjective : MonoBehaviour
     public int currentWave = 1;
 
     [Header("References")]
-    public DialogueScript dialogueScript;
     public SpriteRenderer spriteRenderer;
 
     [Header("Sprites")]
@@ -20,7 +19,6 @@ public class CulinaryObjective : MonoBehaviour
         if (spriteRenderer != null && ogSprite != null)
             spriteRenderer.sprite = ogSprite;
 
-        dialogueScript.SetDialogue(dialogueScript.dialogueData, 0);
 
         AudioManager.FireMusic(AudioManager.MusicSignal.Activity);
 
@@ -52,20 +50,32 @@ public class CulinaryObjective : MonoBehaviour
 
                 Debug.Log("Correct item " + item.itemID + " delivered at Wave " + currentWave);
 
-                Destroy(player.HeldItem); // remove item
+                Destroy(player.HeldItem); 
 
                 remainingObjectives--;
                 Debug.Log("Remaining objectives: " + remainingObjectives);
-
-                dialogueScript.SetDialogue(dialogueScript.dialogueData, currentWave);
 
                 if (spriteRenderer != null && currentWave - 1 < waveSprites.Length)
                 {
                     spriteRenderer.sprite = waveSprites[currentWave - 1];
                 }
 
+                if (currentWave == 1)
+                {
+                    DialogueManager.Instance.Chat("Great! add the dry pasta next.");
+                }
+                else if (currentWave == 2)
+                {
+                    DialogueManager.Instance.Chat("Good! Finally add the tomato sauce to complete the pasta!");
+                    
+                }
+
                 if (currentWave == 3)
+                {
                     remainingObjectives = 0;
+                    DialogueManager.Instance.Chat("Now that is a pasta! Come back here anytime if you want to help!");
+
+                }
 
                 Debug.Log("remaining objectives: " + remainingObjectives);
                 currentWave++;
@@ -75,6 +85,7 @@ public class CulinaryObjective : MonoBehaviour
                 Debug.Log("Item " + item.itemID + " not valid for Wave " + currentWave);
                 AudioManager.FireSFX(AudioManager.SFXSignal.ActivityWrong);
 
+                DialogueManager.Instance.Chat("Wrong ingredient!");
 
                 item.ReturnToOriginalPosition();
 

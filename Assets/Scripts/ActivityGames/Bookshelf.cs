@@ -50,6 +50,10 @@ public class Bookshelf : MonoBehaviour
             {
                 fillCoroutine = StartCoroutine(FillShelfCoroutine(player));
             }
+            else
+            {
+                DialogueManager.Instance.Chat("You're putting the wrong books to the wrong shelf!");
+            }
         }
     }
 
@@ -92,6 +96,7 @@ public class Bookshelf : MonoBehaviour
     {
         isEmpty = false;
         spriteRenderer.sprite = fullSprite;
+        ObjectiveManager.Instance.AddObjective();
         player.ClearHeldBox();
     }
 

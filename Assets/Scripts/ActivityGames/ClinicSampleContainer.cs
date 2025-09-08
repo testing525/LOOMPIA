@@ -12,6 +12,10 @@ public class ClinicSampleContainer : MonoBehaviour
         {
             storeCoroutine = StartCoroutine(FillAndStore(playerHandler));
         }
+        else
+        {
+            DialogueManager.Instance.Chat("You aren't holding any sample, come back here once you have it");
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -50,6 +54,7 @@ public class ClinicSampleContainer : MonoBehaviour
         FillBarManager.Instance.ResetFill();
 
         playerHandler.ForceClearSample();
+        ObjectiveManager.Instance.AddObjective();
 
     }
 }
