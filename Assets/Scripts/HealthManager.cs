@@ -46,12 +46,15 @@ public class HealthManager : MonoBehaviour
     private void OnDestroy()
     {
         if (Instance == this)
+        {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex == 3)
         {
             if (timerManager == null)
             {
@@ -106,7 +109,7 @@ public class HealthManager : MonoBehaviour
 
     private void RefreshLivesUI()
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0 || healthImage == null)
+        if (SceneManager.GetActiveScene().buildIndex != 3 || healthImage == null)
             return;
 
         switch (currentHealth)

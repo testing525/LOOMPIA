@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a41c883ae259d40b242e6dff23f117, type: 3}
+  m_Name: TutorialDialogue1
+  m_EditorClassIdentifier: 
+  lines:
+  - Well, well... you are my very first visitor in this forgotten town!
+  - Because of that, I shall grant you a special role.
+  - From now on, you will be known as... the Wrapper.
+  - 'Your duty is simple: clean up this mess and throw things where they belong.'
+  - "Since you are but a guest, I\u2019ll show a little mercy... you may make four
+    mistakes."
+  - "But beware! Waste those chances, and you\u2019ll vanish like the rest!"
+  - "But for now, no mistakes will count. You\u2019re still learning, after all..."

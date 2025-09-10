@@ -14,11 +14,11 @@ public class ActivityDone : MonoBehaviour
         {
             if (objective != null && objective.remainingObjectives <= 0)
             {
-                StartCoroutine(LoadSceneWithTransition(0));
+                StartCoroutine(LoadSceneWithTransition(3));
             }
             else if (culinaryObjective != null && culinaryObjective.remainingObjectives <= 0)
             {
-                StartCoroutine(LoadSceneWithTransition(0));
+                StartCoroutine(LoadSceneWithTransition(3));
             }
             else
             {
@@ -33,7 +33,6 @@ public class ActivityDone : MonoBehaviour
 
         yield return SceneTransition.Instance.StartCoroutine(SceneTransition.Instance.FadeIn());
 
-        // Now load scene
         SceneManager.LoadScene(sceneIndex);
     }
 }

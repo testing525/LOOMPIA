@@ -51,6 +51,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,15 +78,15 @@ SpriteRenderer:
   m_SortingLayerID: 753286475
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2954d4c6ebcfd744c92f752e1efb121e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0b922a10a280c9041b43d9afa3fe3da8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.6, y: 3.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &-2004402382384975682
@@ -101,6 +104,8 @@ MonoBehaviour:
   spriteRenderer: {fileID: 8790118034304652386}
   closedSprite: {fileID: 21300000, guid: 0b922a10a280c9041b43d9afa3fe3da8, type: 3}
   openSprite: {fileID: 21300000, guid: 259d3be4cdaa96745aef2a5d25b97434, type: 3}
+  moveSpeed: 2
+  exitOffset: 5
 --- !u!114 &3100052219882871726
 MonoBehaviour:
   m_ObjectHideFlags: 0

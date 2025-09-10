@@ -10,10 +10,10 @@ public class FarmPlayerItemHandler : MonoBehaviour
     public LayerMask itemLayer;
     public LayerMask farmBoxLayer;
     public KeyCode interactKey = KeyCode.E;
-    private FarmBox lastBox; // track the last box so we can turn off its highlight
+    private FarmBox lastBox; 
 
     [Header("References")]
-    public Transform itemHoldPoint; 
+    public Transform itemHoldPoint;
 
     private FarmItem nearbyItem;
     private FarmItem heldFarmItem;
@@ -26,35 +26,31 @@ public class FarmPlayerItemHandler : MonoBehaviour
 
         if (Input.GetKeyDown(interactKey))
         {
-            if (heldItem == ItemType.None && nearbyItem != null)
-            {
-                PickupItem(nearbyItem);
-            }
-            else if (heldItem != ItemType.None && nearbyBox != null)
-            {
-                nearbyBox.Interact(this);
-            }
-            else if (heldItem != ItemType.None && heldFarmItem != null)
-            {
-                DropItem();
-            }
+            Interact();
         }
     }
 
+    public void Interact()
+    {
+        if (heldItem == ItemType.None && nearbyItem != null)
+        {
+            PickupItem(nearbyItem);
+        }
+        else if (heldItem != ItemType.None && nearbyBox != null)
+        {
+            nearbyBox.Interact(this);
+        }
+        else if (heldItem != ItemType.None && heldFarmItem != null)
+        {
+            DropItem();
+        }
+    }
 
     private void DetectNearbyItem()
     {
         Collider2D hit = Physics2D.OverlapCircle(transform.position, interactRange, itemLayer);
-        if (hit != null)
-        {
-            nearbyItem = hit.GetComponent<FarmItem>();
-        }
-        else
-        {
-            nearbyItem = null;
-        }
+        nearbyItem = hit != null ? hit.GetComponent<FarmItem>() : null;
     }
-
 
     private void DetectFarmBox()
     {
@@ -64,29 +60,24 @@ public class FarmPlayerItemHandler : MonoBehaviour
             FarmBox box = hit.GetComponent<FarmBox>();
             if (box != null)
             {
-                // if this is a new box, turn off highlight on the previous one
                 if (box != nearbyBox && nearbyBox != null)
-                {
                     nearbyBox.ShowHighlight(false);
-                }
 
                 nearbyBox = box;
-                nearbyBox.ShowHighlight(true); // enable highlight on the current one
+                nearbyBox.ShowHighlight(true);
 
-                Debug.Log($"👀 Close to farmbox: {nearbyBox.name} (State: {nearbyBox.currentState})");
+                Debug.Log($"Close to farmbox: {nearbyBox.name} (State: {nearbyBox.currentState})");
             }
         }
         else
         {
             if (nearbyBox != null)
             {
-                nearbyBox.ShowHighlight(false); // hide highlight when leaving
+                nearbyBox.ShowHighlight(false);
                 nearbyBox = null;
             }
         }
     }
-
-
 
     private void PickupItem(FarmItem item)
     {
@@ -118,7 +109,6 @@ public class FarmPlayerItemHandler : MonoBehaviour
         heldItem = ItemType.None;
         heldFarmItem = null;
     }
-
 
     private void OnDrawGizmosSelected()
     {

@@ -40,7 +40,7 @@ public class SceneTransition : MonoBehaviour
             rect.anchoredPosition = Vector2.MoveTowards(
                 rect.anchoredPosition,
                 targetPos,
-                transitionSpeed * Time.deltaTime * 1000f // scale if needed
+                transitionSpeed * Time.deltaTime * 1000f 
             );
             yield return null;
         }

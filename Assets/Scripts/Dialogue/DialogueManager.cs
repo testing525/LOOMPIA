@@ -5,7 +5,10 @@ using System.Collections;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance; // Singleton
+    public static DialogueManager Instance;
+
+    public System.Action OnInstructionsFinished;
+    public System.Action OnDialogueFinished;
 
     [Header("Chat Containers")]
     [SerializeField] private GameObject instructionsContainer;
@@ -23,17 +26,28 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialogueData instructionsData;
     [SerializeField] private DialogueData dialogueData;
 
+
     private int instructionsIndex = 0;
     private int dialogueIndex = 0;
+    public int CurrentInstructionIndex => instructionsIndex;
 
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
-        else
-            Destroy(gameObject);
 
-        instructionsContainer.SetActive(false);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        if(instructionsContainer != null)
+        {
+            instructionsContainer.SetActive(false);
+        }
+
         dialogueContainer.SetActive(false);
         chatContainer.SetActive(false);
     }
@@ -55,7 +69,11 @@ public class DialogueManager : MonoBehaviour
         }
 
         instructionsIndex = 0;
-        instructionsContainer.SetActive(true);
+        if (instructionsContainer != null)
+        {
+            instructionsContainer.SetActive(true);
+        }
+
         instructionsText.text = instructionsData.lines[instructionsIndex];
     }
 
@@ -68,6 +86,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            OnInstructionsFinished?.Invoke();
             instructionsContainer.SetActive(false);
         }
     }
@@ -94,6 +113,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            OnDialogueFinished?.Invoke();
             dialogueContainer.SetActive(false);
         }
     }

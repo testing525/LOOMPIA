@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
-    [Header("UI (Only in Scene 0)")]
+    [Header("UI (Only in Scene 4)")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI streakText;
     public TextMeshProUGUI highscoreText; 
@@ -58,30 +58,40 @@ public class ScoreManager : MonoBehaviour
         highscoreText = null;
         scoreStreakFX = null;
 
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex == 3)
         {
             GameObject uiCanvas = GameObject.Find("UI");
             if (uiCanvas != null)
             {
                 Transform scoreObj = uiCanvas.transform.Find("ScoreText");
                 if (scoreObj != null)
+                {
                     scoreText = scoreObj.GetComponent<TextMeshProUGUI>();
+                }
 
                 Transform streakObj = uiCanvas.transform.Find("ScoreText/StreakText");
                 if (streakObj != null)
+                {
                     streakText = streakObj.GetComponent<TextMeshProUGUI>();
+                }
 
                 Transform highscoreObj = uiCanvas.transform.Find("StartMenu/Highscore/HighscoreText");
                 if (highscoreObj != null)
+                {
                     highscoreText = highscoreObj.GetComponent<TextMeshProUGUI>();
+                }
 
                 Transform fxObj = uiCanvas.transform.Find("ScoreText");
                 if (fxObj != null)
+                {
                     scoreStreakFX = fxObj.GetComponent<ScoreStreakFX>();
+                }
             }
 
             if (highscoreText != null)
+            {
                 highscoreText.text = highestScore.ToString();
+            }
 
             UpdateScoreUI();
             UpdateStreakUI();
@@ -98,7 +108,9 @@ public class ScoreManager : MonoBehaviour
             PlayerPrefs.SetInt("HighestScore", highestScore);
 
             if (highscoreText != null)
+            {
                 highscoreText.text = highestScore.ToString();
+            }
         }
     }
 
@@ -109,7 +121,9 @@ public class ScoreManager : MonoBehaviour
         currentScore += pointsToAdd;
 
         if (scoreStreakFX != null)
+        {
             scoreStreakFX.PlayBounceShake();
+        }
 
         UpdateScoreUI();
         UpdateStreakUI();
@@ -125,19 +139,25 @@ public class ScoreManager : MonoBehaviour
         UpdateStreakUI();
 
         if (scoreStreakFX != null)
+        {
             scoreStreakFX.ResetColor();
+        }
     }
 
     private void UpdateScoreUI()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0 && scoreText != null)
+        if (scoreText != null)
+        {
             scoreText.text = currentScore.ToString();
+        }
     }
 
     private void UpdateStreakUI()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0 && streakText != null)
+        if (streakText != null)
+        {
             streakText.text = currentStreak.ToString();
+        }
     }
 
     public void Restart()

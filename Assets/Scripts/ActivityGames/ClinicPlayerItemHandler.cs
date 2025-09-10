@@ -20,32 +20,40 @@ public class ClinicPlayerItemHandler : MonoBehaviour
     private SpriteRenderer placeholderRenderer;
 
     private ClinicEnum.ToolType? heldTool = null;
-    private bool holdingSample = false; // ✅ single state for "sample mode"
+    private bool holdingSample = false;
 
     private void Start()
     {
         if (placeholder != null)
+        {
             placeholderRenderer = placeholder.GetComponent<SpriteRenderer>();
+        }
 
         if (placeholderRenderer != null)
+        {
             placeholderRenderer.sprite = null;
+        }
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(interactKey))
         {
-            if (!holdingSample) // ✅ can only interact if not already holding a sample
-            {
-                if (heldTool == null && nearbyStorage != null)
-                {
-                    PickUpTool(nearbyStorage);
-                }
-                else if (heldTool != null)
-                {
-                    DropTool();
-                }
-            }
+            Interact();
+        }
+    }
+
+    public void Interact()
+    {
+        if (holdingSample) return;
+
+        if (heldTool == null && nearbyStorage != null)
+        {
+            PickUpTool(nearbyStorage);
+        }
+        else if (heldTool != null)
+        {
+            DropTool();
         }
     }
 
@@ -99,8 +107,8 @@ public class ClinicPlayerItemHandler : MonoBehaviour
                 break;
         }
 
-        heldTool = null;      // ✅ no longer considered a "tool"
-        holdingSample = true; // ✅ now in sample state
+        heldTool = null;
+        holdingSample = true;
 
         Debug.Log($"Converted to sample: {tool}");
     }
@@ -110,9 +118,10 @@ public class ClinicPlayerItemHandler : MonoBehaviour
         ClinicToolStorage storage = other.GetComponent<ClinicToolStorage>();
         if (storage != null)
         {
-            // ✅ Only one active storage at a time
             if (nearbyStorage != null && nearbyStorage != storage)
+            {
                 nearbyStorage.highlight.SetActive(false);
+            }
 
             nearbyStorage = storage;
             nearbyStorage.highlight.SetActive(true);
@@ -133,7 +142,6 @@ public class ClinicPlayerItemHandler : MonoBehaviour
     {
         holdingSample = false;
     }
-
 
     public ClinicEnum.ToolType? GetHeldTool() => heldTool;
     public bool IsHoldingSample() => holdingSample;

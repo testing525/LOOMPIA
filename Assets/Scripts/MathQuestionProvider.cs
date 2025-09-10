@@ -17,8 +17,8 @@ public static class MathQuestionProvider
 
     private static QuestionData GenerateEasy()
     {
-        int a = Random.Range(1, 20);
-        int b = Random.Range(1, 20);
+        int a = Random.Range(1, 10);
+        int b = Random.Range(1, 10);
 
         string question = "";
         int answer = 0;
@@ -51,9 +51,9 @@ public static class MathQuestionProvider
 
     private static QuestionData GenerateMedium()
     {
-        int a = Random.Range(1, 10);
-        int b = Random.Range(1, 10);
-        int c = Random.Range(1, 10);
+        int a = Random.Range(1, 5);
+        int b = Random.Range(1, 5);
+        int c = Random.Range(1, 5);
 
         int pattern = Random.Range(0, 3);
         string question = "";
@@ -88,10 +88,10 @@ public static class MathQuestionProvider
 
     private static QuestionData GenerateHard()
     {
-        int a = Random.Range(1, 10);
-        int b = Random.Range(1, 10);
-        int c = Random.Range(1, 10);
-        int d = Random.Range(1, 10);
+        int a = Random.Range(1, 5);
+        int b = Random.Range(1, 5);
+        int c = Random.Range(1, 5);
+        int d = Random.Range(1, 5);
 
         int pattern = Random.Range(0, 3);
         string question = "";

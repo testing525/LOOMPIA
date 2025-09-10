@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a41c883ae259d40b242e6dff23f117, type: 3}
+  m_Name: StoryDialogue
+  m_EditorClassIdentifier: 
+  lines:
+  - "Great job, little wrapper! Seems like you\u2019ve handled the fundamentals well."
+  - "-Help! Someone please, I can\u2019t do this on my own!"
+  - "Oh my\u2026 it sounds like someone\u2019s in trouble."
+  - See over there? That folk looks exhausted. He must have been trying to clean
+    up.
+  - "Please! The trash keeps piling up and I\u2019m too tired to carry them to the
+    bins\u2026 "
+  - I can barely stand anymore!
+  - "Hmm\u2026 This is where you come in, little one. Why don\u2019t you lend him
+    a hand?"
+  - "And don\u2019t worry, if you ever make a mistake"
+  - "I\u2019ll grant you an extra chance"
+  - "so long as you\u2019ve helped these people when they needed it."
+  - "I should be going now, but I\u2019ll be watching. Good luck, little one"
+  - "Please\u2026 help me pick up the trash and drop them into the right bins."
+  - "Really? You\u2019ll help me? "
+  - "Thank you\u2026 I don\u2019t know what I\u2019d do without someone\u2019s support."

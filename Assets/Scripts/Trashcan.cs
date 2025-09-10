@@ -8,7 +8,7 @@ public class Trashcan : MonoBehaviour
     public Sprite openSprite;
 
     [Header("Movement Settings")]
-    public float moveSpeed = 2f;
+    public float moveSpeed = 1.5f;
     public float exitOffset = 5f; 
 
     private GameManager gm;
@@ -17,7 +17,9 @@ public class Trashcan : MonoBehaviour
     private void Reset()
     {
         if (spriteRenderer == null)
+        {
             spriteRenderer = GetComponent<SpriteRenderer>();
+        }
     }
 
     private void Start()

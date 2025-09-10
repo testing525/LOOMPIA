@@ -14,18 +14,24 @@ public class LibraryPlayerItemHandler : MonoBehaviour
 
     private void Update()
     {
+        HandleHighlight();
+
+        if (Input.GetKeyDown(interactKey))
+        {
+            Interact();
+        }
+    }
+
+    private void HandleHighlight()
+    {
         if (heldBox == null)
         {
             BookBox nearest = GetNearestBox();
             if (nearest != currentHighlight)
             {
-                if (currentHighlight != null)
-                    currentHighlight.ShowHighlight(false);
-
+                if (currentHighlight != null) currentHighlight.ShowHighlight(false);
                 currentHighlight = nearest;
-
-                if (currentHighlight != null)
-                    currentHighlight.ShowHighlight(true);
+                if (currentHighlight != null) currentHighlight.ShowHighlight(true);
             }
         }
         else
@@ -36,17 +42,17 @@ public class LibraryPlayerItemHandler : MonoBehaviour
                 currentHighlight = null;
             }
         }
+    }
 
-        if (Input.GetKeyDown(interactKey))
+    public void Interact()
+    {
+        if (heldBox == null && currentHighlight != null)
         {
-            if (heldBox == null && currentHighlight != null)
-            {
-                PickupBox(currentHighlight);
-            }
-            else if (heldBox != null)
-            {
-                DropBox();
-            }
+            PickupBox(currentHighlight);
+        }
+        else if (heldBox != null)
+        {
+            DropBox();
         }
     }
 
@@ -56,6 +62,7 @@ public class LibraryPlayerItemHandler : MonoBehaviour
 
         heldBox = box;
         heldBox.ShowHighlight(false);
+
         heldBox.transform.SetParent(holdPoint);
         heldBox.transform.localPosition = Vector3.zero;
         heldBox.transform.localRotation = Quaternion.identity;
@@ -106,13 +113,11 @@ public class LibraryPlayerItemHandler : MonoBehaviour
     public void ClearHeldBox()
     {
         if (heldBox == null) return;
-
         if (disabledCollider != null)
         {
             disabledCollider.enabled = true;
             disabledCollider = null;
         }
-
         Destroy(heldBox.gameObject);
         heldBox = null;
     }
@@ -120,8 +125,7 @@ public class LibraryPlayerItemHandler : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         BookBox box = collision.GetComponent<BookBox>();
-        if (box != null && !nearbyBoxes.Contains(box))
-            nearbyBoxes.Add(box);
+        if (box != null && !nearbyBoxes.Contains(box)) nearbyBoxes.Add(box);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -142,11 +146,9 @@ public class LibraryPlayerItemHandler : MonoBehaviour
     {
         BookBox nearest = null;
         float minDist = float.MaxValue;
-
         foreach (var box in nearbyBoxes)
         {
             if (box == null) continue;
-
             float dist = Vector2.Distance(transform.position, box.transform.position);
             if (dist < minDist)
             {
@@ -154,11 +156,9 @@ public class LibraryPlayerItemHandler : MonoBehaviour
                 nearest = box;
             }
         }
-
         return nearest;
     }
 
     public bool IsHolding() => heldBox != null;
-
     public Bookshelf.ShelfType? GetHeldType() => heldBox != null ? heldBox.boxType : (Bookshelf.ShelfType?)null;
 }

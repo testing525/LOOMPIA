@@ -7,17 +7,20 @@ public class UIButtonFlyer : MonoBehaviour
     [Header("References")]
     public GameObject flyerPrefab;
 
-
     public void SpawnAndMove(Vector3 startWorldPos, Vector3 targetWorldPos, float duration = 0.5f, float stayDuration = 0.7f, Action<GameObject> onFinished = null)
     {
-        if (flyerPrefab == null) return;
+        SpawnAndMoveWithPrefab(flyerPrefab, startWorldPos, targetWorldPos, duration, stayDuration, onFinished);
+    }
 
-        GameObject flyer = Instantiate(flyerPrefab, startWorldPos, Quaternion.identity);
+    public void SpawnAndMoveWithPrefab(GameObject prefab, Vector3 startWorldPos, Vector3 targetWorldPos, float duration = 2f, float stayDuration = 0.75f, Action<GameObject> onFinished = null)
+    {
+        if (prefab == null) return;
+
+        GameObject flyer = Instantiate(prefab, startWorldPos, Quaternion.identity);
         flyer.transform.localScale = Vector3.one;
 
         StartCoroutine(MoveAndScale(flyer.transform, targetWorldPos, duration, stayDuration, onFinished));
     }
-
 
     private IEnumerator MoveAndScale(Transform obj, Vector3 targetPos, float duration, float stayDuration, Action<GameObject> onFinished)
     {
@@ -49,6 +52,4 @@ public class UIButtonFlyer : MonoBehaviour
 
         Destroy(obj.gameObject);
     }
-
-
 }

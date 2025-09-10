@@ -14,14 +14,32 @@ public class QuestionManager : MonoBehaviour
     [Header("UI Elements")]
     public TextMeshProUGUI questionText;
     public Button[] problemButtons;
+    public Button[] subjectButtons;
+
+
+    [Header("Subject Assets")]
+    public Sprite mathSprite;
+    public Sprite litSprite;
+    public Sprite scienceSprite;
+
+    public GameObject mathFlyerPrefab;
+    public GameObject litFlyerPrefab;
+    public GameObject scienceFlyerPrefab;
 
     private int correctIndex;
+    private string currentSubject; // keep track of subject
 
     public void GetQuestionFor(string subject)
     {
         QuestionData data = null;
 
+        foreach (var btn in problemButtons)
+        {
+            btn.interactable = true;
+        }
+
         string difficulty = DifficultyManager.GetDifficultyType();
+        currentSubject = subject; // remember subject
 
         switch (subject)
         {
@@ -40,8 +58,21 @@ public class QuestionManager : MonoBehaviour
         {
             DisplayQuestion(data);
 
+            // Apply subject-specific button sprite
+            Sprite chosenSprite = null;
+            switch (subject)
+            {
+                case "Math": chosenSprite = mathSprite; break;
+                case "Literature": chosenSprite = litSprite; break;
+                case "Science": chosenSprite = scienceSprite; break;
+            }
+
             foreach (var btn in problemButtons)
+            {
                 btn.gameObject.SetActive(true);
+                if (chosenSprite != null)
+                    btn.image.sprite = chosenSprite;
+            }
         }
     }
 
@@ -89,10 +120,19 @@ public class QuestionManager : MonoBehaviour
                 Vector3 startWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
                 startWorldPos.z = 0f;
 
-                Vector3 targetWorldPos = solvedTrashcan.transform.position + Vector3.up * 0.6f + Vector3.right * -1.3f;
+                Vector3 targetWorldPos = solvedTrashcan.transform.position + Vector3.up * 0.6f + Vector3.right * -4f;
 
+                // pick correct prefab
+                GameObject chosenPrefab = null;
+                switch (currentSubject)
+                {
+                    case "Math": chosenPrefab = mathFlyerPrefab; break;
+                    case "Literature": chosenPrefab = litFlyerPrefab; break;
+                    case "Science": chosenPrefab = scienceFlyerPrefab; break;
+                }
 
-                flyerManager.SpawnAndMove(startWorldPos, targetWorldPos, 0.7f, 0.0f, (flyer) =>
+                // use new function with prefab
+                flyerManager.SpawnAndMoveWithPrefab(chosenPrefab, startWorldPos, targetWorldPos, 0.75f, 1.25f, (flyer) =>
                 {
                     if (trashcanComp != null) trashcanComp.Close();
                     StartCoroutine(FadeAndDestroy(solvedTrashcan, 0.5f, () =>
@@ -100,8 +140,6 @@ public class QuestionManager : MonoBehaviour
                         selectedButton.gameObject.SetActive(true);
                     }));
                 });
-
-
             }
         }
         else
@@ -123,7 +161,6 @@ public class QuestionManager : MonoBehaviour
             }
         }
 
-
         StartCoroutine(TransitionManager.MoveUI(
             gameManager.problemChoicesGroup,
             gameManager.offscreenLeft, 0.5f, () =>
@@ -137,11 +174,19 @@ public class QuestionManager : MonoBehaviour
 
         GameSpeed.Instance.SetNormal();
 
+        foreach (var btn in problemButtons)
+        {
+            btn.interactable = false;
+        }
+
+        foreach (var btn in subjectButtons)
+        {
+            btn.interactable = true;
+        }
     }
 
     public IEnumerator FadeAndDestroy(GameObject obj, float delay, System.Action onDestroyed = null)
     {
-
         if (obj == null)
         {
             onDestroyed?.Invoke();
@@ -176,23 +221,17 @@ public class QuestionManager : MonoBehaviour
         foreach (var btn in problemButtons)
         {
             btn.gameObject.SetActive(false);
-
         }
-
 
         StartCoroutine(TransitionManager.MoveUI(
             gameManager.problemChoicesGroup,
             gameManager.offscreenLeft, 0.5f, () =>
             {
                 gameManager.subjChoicesGroup.anchoredPosition = gameManager.problemHiddenPos;
-                StartCoroutine(TransitionManager.MoveUI(
-                    gameManager.subjChoicesGroup, gameManager.subjStartPos, 0.5f, () =>
-                    {
-                        gameManager.OnReturnFromProblem();
-                    }));
+                StartCoroutine(TransitionManager.MoveUI(gameManager.subjChoicesGroup, gameManager.subjStartPos, 0.5f, () =>
+                {
+                    gameManager.OnReturnFromProblem();
+                }));
             }));
     }
-
-
-
 }

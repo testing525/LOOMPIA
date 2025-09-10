@@ -12,8 +12,8 @@ public class FarmBox : MonoBehaviour
     public SpriteRenderer blockSprite;
 
     [Header("Highlight UI")]
-    public GameObject highlight;          // highlight GameObject
-    public SpriteRenderer iconRenderer;   // child SpriteRenderer for the icon
+    public GameObject highlight;         
+    public SpriteRenderer iconRenderer;   
     public Sprite fertilizerIcon;
     public Sprite seedIcon;
     public Sprite waterIcon;
@@ -21,12 +21,17 @@ public class FarmBox : MonoBehaviour
     private void Start()
     {
         if (plantSprite != null)
+        {
             plantSprite.sprite = null;
+        }
 
         currentState = FarmState.NeedsFertilizer;
 
         if (highlight != null)
-            highlight.SetActive(false); // hidden until detected
+        {
+            highlight.SetActive(false); 
+
+        }
     }
 
     public void Interact(FarmPlayerItemHandler player)
@@ -41,10 +46,9 @@ public class FarmBox : MonoBehaviour
                 plantSprite.sprite = fertilizedSprite;
                 plantSprite.color = Color.white;
             }
-            Debug.Log("🌱 Fertilizer added.");
+            Debug.Log("fertilizer added.");
         }
-        else if (currentState == FarmState.NeedsPlant &&
-                 player.heldItem == FarmPlayerItemHandler.ItemType.SeedBox)
+        else if (currentState == FarmState.NeedsPlant && player.heldItem == FarmPlayerItemHandler.ItemType.SeedBox)
         {
             currentState = FarmState.NeedsWater;
             player.ClearItem();
@@ -53,40 +57,42 @@ public class FarmBox : MonoBehaviour
                 plantSprite.sprite = seedSprite;
                 plantSprite.color = Color.white;
             }
-            Debug.Log("🌱 Seeds planted.");
+            Debug.Log("seeds planted.");
         }
-        else if (currentState == FarmState.NeedsWater &&
-                 player.heldItem == FarmPlayerItemHandler.ItemType.WaterCan)
+        else if (currentState == FarmState.NeedsWater && player.heldItem == FarmPlayerItemHandler.ItemType.WaterCan)
         {
             currentState = FarmState.Done;
+            ObjectiveManager.Instance.AddObjective();
             player.ClearItem();
             if (blockSprite != null)
             {
-                // Darken the farmbox's sprite to show it's watered
                 plantSprite.color = new Color32(195, 195, 195, 255);
             }
 
             if (highlight != null)
-                highlight.SetActive(false); // hide highlight since it's finished
+            {
+                highlight.SetActive(false);
+            }
 
-            Debug.Log("💧 Plant watered! Farm box is complete.");
+            Debug.Log("plant watered! Farm box is complete.");
         }
         else
         {
-            Debug.Log("❌ Wrong item or already finished.");
+            Debug.Log("wrong item or already finished.");
         }
 
         UpdateHighlightIcon();
     }
 
-    // Called by player detection
     public void ShowHighlight(bool show)
     {
         if (highlight != null)
         {
-            // If Done, keep highlight disabled
             highlight.SetActive(show && currentState != FarmState.Done);
-            if (show) UpdateHighlightIcon();
+            if (show) 
+            { 
+                UpdateHighlightIcon(); 
+            }
         }
     }
 
@@ -95,12 +101,20 @@ public class FarmBox : MonoBehaviour
         if (iconRenderer == null) return;
 
         if (currentState == FarmState.NeedsFertilizer)
+        {
             iconRenderer.sprite = fertilizerIcon;
+        }
         else if (currentState == FarmState.NeedsPlant)
+        {
             iconRenderer.sprite = seedIcon;
+        }
         else if (currentState == FarmState.NeedsWater)
+        {
             iconRenderer.sprite = waterIcon;
+        }
         else
-            iconRenderer.sprite = null; // hide if Done
+        {
+            iconRenderer.sprite = null;
+        }
     }
 }

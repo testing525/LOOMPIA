@@ -3,33 +3,36 @@
 public class GarbagePlayerItemHandler : MonoBehaviour
 {
     [Header("References")]
-    public Transform placeholder; 
+    public Transform placeholder;
     public KeyCode interactKey = KeyCode.E;
 
     private Garbage nearbyGarbage;
     public Garbage heldGarbage;
-    [HideInInspector] public GarbageBin nearbyBin; 
+    [HideInInspector] public GarbageBin nearbyBin;
 
     private void Update()
     {
         if (Input.GetKeyDown(interactKey))
         {
-            if (heldGarbage != null && nearbyBin != null)
-            {
-                nearbyBin.TryDisposeGarbage(this);
-            }
-            else if (heldGarbage != null)
-            {
-                DropGarbage();
-            }
-            else if (heldGarbage == null && nearbyGarbage != null)
-            {
-                PickUpGarbage(nearbyGarbage);
-            }
+            Interact();
         }
     }
 
-
+    public void Interact()
+    {
+        if (heldGarbage != null && nearbyBin != null)
+        {
+            nearbyBin.TryDisposeGarbage(this);
+        }
+        else if (heldGarbage != null)
+        {
+            DropGarbage();
+        }
+        else if (heldGarbage == null && nearbyGarbage != null)
+        {
+            PickUpGarbage(nearbyGarbage);
+        }
+    }
 
     private void PickUpGarbage(Garbage garbage)
     {
@@ -42,11 +45,10 @@ public class GarbagePlayerItemHandler : MonoBehaviour
         Collider2D col = garbage.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        if (garbage.highlight != null) 
+        if (garbage.highlight != null)
         {
             garbage.highlight.SetActive(false);
-        } 
-
+        }
 
         Debug.Log($"Picked up garbage: {garbage.garbageType}");
     }
@@ -57,14 +59,14 @@ public class GarbagePlayerItemHandler : MonoBehaviour
 
         heldGarbage.transform.SetParent(null);
 
-        Vector3 dropPos = heldGarbage.transform.position; 
-        dropPos.x = placeholder.position.x;               
-        dropPos.y = placeholder.position.y - 0.5f;       
+        Vector3 dropPos = heldGarbage.transform.position;
+        dropPos.x = placeholder.position.x;
+        dropPos.y = placeholder.position.y - 0.5f;
         heldGarbage.transform.position = dropPos;
         heldGarbage.transform.rotation = Quaternion.identity;
 
         Collider2D col = heldGarbage.GetComponent<Collider2D>();
-        if (col != null) 
+        if (col != null)
         {
             col.enabled = true;
         }
@@ -74,11 +76,10 @@ public class GarbagePlayerItemHandler : MonoBehaviour
         heldGarbage = null;
     }
 
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         Garbage garbage = other.GetComponent<Garbage>();
-        if (garbage != null && heldGarbage == null) // ✅ only detect if not already holding
+        if (garbage != null && heldGarbage == null) 
         {
             nearbyGarbage = garbage;
             if (garbage.highlight != null) garbage.highlight.SetActive(true);
@@ -90,7 +91,10 @@ public class GarbagePlayerItemHandler : MonoBehaviour
         Garbage garbage = other.GetComponent<Garbage>();
         if (garbage != null && garbage == nearbyGarbage)
         {
-            if (garbage.highlight != null) garbage.highlight.SetActive(false);
+            if (garbage.highlight != null) 
+            { 
+                garbage.highlight.SetActive(false); 
+            }
             nearbyGarbage = null;
         }
     }

@@ -10,8 +10,7 @@ public class PickupItem : MonoBehaviour
 
     [HideInInspector] public int defaultOrder;
     [HideInInspector] public Vector3 originalPosition;
-    [HideInInspector] public Vector3 originalScale; // store original scale
-
+    [HideInInspector] public Vector3 originalScale;
     void Awake()
     {
         if (spriteRenderer == null)
@@ -25,7 +24,7 @@ public class PickupItem : MonoBehaviour
         }
 
         originalPosition = transform.position;
-        originalScale = transform.localScale; // store original scale
+        originalScale = transform.localScale;
     }
 
     public void SetPickedUp(bool pickedUp)
@@ -48,6 +47,6 @@ public class PickupItem : MonoBehaviour
     {
         transform.SetParent(null);
         transform.position = originalPosition;
-        transform.localScale = originalScale; // restore original scale
+        transform.localScale = originalScale; 
     }
 }

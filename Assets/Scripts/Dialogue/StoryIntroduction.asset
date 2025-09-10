@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a41c883ae259d40b242e6dff23f117, type: 3}
+  m_Name: StoryIntroduction
+  m_EditorClassIdentifier: 
+  lines:
+  - Oh? What do we have here...
+  - What made you go all the way here to stumble into this mysterious town?
+  - None the less, you cannot leave this place anymore.
+  - Why? Obviously because you are now part of the CURSE!
+  - "Heh\u2026 You don\u2019t know what I mean, do you?"
+  - Then listen closely, for this tale is older than your footsteps.
+  - A long time ago... A magical creature lived in peace with the world. The forest
+    grew strong, the rivers were clean, and all the animals lived together well.
+  - One day, a group of tired humans arrived, asking the creature for help. Because
+    it was kind, the creature helped them, teaching, protecting, and cleaning up
+    after them.
+  - "But as time passed, the humans became careless. They relied creature\u2019s
+    kindness and didn't care about their own mess. What started as being thankful,
+    turned into feeling they deserved help."
+  - "At last, the creature\u2019s patience ran dry. It laid a curse upon the village:
+    from then on, every human must solve a riddle before throwing trash into the
+    proper bin. The riddles drew upon the wisdom of math, science, and literature,
+    the very knowledge the humans had neglected. If one failed to answer, they would
+    vanish, erased as punishment for ignorance."
+  - But why had the humans grown so ignorant?
+  - In the beginning, the creature not only cared for them but also provided answers
+    to their every question. When they hungered, it taught them which fruits to eat;
+    when they were lost, it guided their steps; when they wondered about the stars,
+    it revealed their secrets.
+  - Generation after generation, the humans forgot how to think critically. What
+    once was a thriving people became a village of dependency, spoiled by endless
+    generosity. Their minds dulled, their wisdom abandoned.
+  - And so the curse was not born of malice alone, but of necessity, the only way
+    the creature could force the humans to remember how to learn, how to struggle,
+    and how to grow wise again.
+  - Trapped within the remote village, the humans had no escape. Their only path
+    forward was to relearn what they had forgotten to think, to grow wise, and to
+    respect the world that once gave them everything.

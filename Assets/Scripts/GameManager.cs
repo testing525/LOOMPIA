@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
     public NotifyScript notifyScript;
     public PlayerAutoMove playerScript;
+    [SerializeField] private Animator playerAnimator;
 
     private readonly List<string> subjects = new List<string>() { "Math", "Literature", "Science" };
 
@@ -30,6 +31,10 @@ public class GameManager : MonoBehaviour
     public RectTransform subjChoicesGroup;
     public RectTransform problemChoicesGroup;
 
+    [Header("NPC Settings")]
+    public EventSpawnManager npcManager;
+    public string currentNPCType;
+
     public Vector2 subjStartPos;
     public Vector2 problemHiddenPos;
     public Vector2 offscreenLeft = new Vector2(-2000, 0);
@@ -38,7 +43,7 @@ public class GameManager : MonoBehaviour
     public GameObject mathTrashcan;
     public GameObject literatureTrashcan;
     public GameObject scienceTrashcan;
-    public GameObject currentTrashcan; // new field
+    public GameObject currentTrashcan; 
 
     private Dictionary<string, GameObject> trashcanPrefabMap;
 
@@ -47,11 +52,12 @@ public class GameManager : MonoBehaviour
 
     [Header("Round Settings")]
     public int minTrashcans = 1;
-    public int maxTrashcans = 6;
+    public int maxTrashcans = 4;
     public int rounds;
     public int roundsForActivity = 3;
 
     public readonly List<GameObject> spawnedTrashcans = new List<GameObject>();
+    private Dictionary<string, Color> subjectColors;
 
     private const string SubjectPrompt = "What subject is this trashcan?";
 
@@ -62,6 +68,13 @@ public class GameManager : MonoBehaviour
             { "Math",       mathTrashcan },
             { "Literature", literatureTrashcan },
             { "Science",    scienceTrashcan }
+        };
+
+        subjectColors = new Dictionary<string, Color>()
+        {
+            { "Math",       new Color(0.451f, 0.882f, 1.000f) }, 
+            { "Literature", new Color(0.553f, 1.000f, 0.643f) },   
+            { "Science",    new Color(1.000f, 0.447f, 0.392f) }   
         };
     }
 
@@ -79,11 +92,25 @@ public class GameManager : MonoBehaviour
 
     public void StartNewRound()
     {
-        if (!gameStarted) return; 
+        if (!gameStarted) return;
 
         if (rounds >= roundsForActivity)
         {
             StopSpawning();
+
+            if (npcManager != null && npcManager.npcs.Length > 0)
+            {
+                int randomIndex = Random.Range(0, npcManager.npcs.Length);
+                currentNPCType = npcManager.npcs[randomIndex].npcName;
+
+                npcManager.SpawnNPC(currentNPCType);
+
+                uiManager.ToggleUI(uiManager.activityMenuFrame);
+
+                StartCoroutine(ReadyActivityEvent());
+
+            }
+
             return;
         }
         rounds++;
@@ -91,7 +118,9 @@ public class GameManager : MonoBehaviour
 
         // round setup 
         for (int i = spawnedTrashcans.Count - 1; i >= 0; i--)
+        {
             if (spawnedTrashcans[i] != null) Destroy(spawnedTrashcans[i]);
+        }
         spawnedTrashcans.Clear();
         subjectQueue.Clear();
         notifyScript.TriggerNotify();
@@ -135,6 +164,7 @@ public class GameManager : MonoBehaviour
 
         // setup choice buttons
         List<string> shuffledChoices = new List<string>(subjects);
+
         for (int i = 0; i < shuffledChoices.Count; i++)
         {
             int r = Random.Range(i, shuffledChoices.Count);
@@ -144,14 +174,97 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < choiceButtons.Length; i++)
         {
             int idx = i;
-            choiceButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = shuffledChoices[idx];
+            string subject = shuffledChoices[idx];
+
+            choiceButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = subject;
+
+            if (subjectColors.TryGetValue(subject, out Color subjColor))
+            {
+                choiceButtons[i].GetComponent<Image>().color = subjColor;
+            }
+
             choiceButtons[i].onClick.RemoveAllListeners();
-            choiceButtons[i].onClick.AddListener(() => OnAnswerSelected(shuffledChoices[idx]));
+            choiceButtons[i].onClick.AddListener(() => OnAnswerSelected(subject));
         }
+
 
         timerManager.RestartTimer();
 
         Debug.Log("Subjects this round: " + string.Join(", ", roundSubjects));
+    }
+
+    private IEnumerator ReadyActivityEvent()
+    {
+        yield return new WaitForSeconds(2f); 
+
+        GameSpeed.Instance.SetStop();
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetBool("isRunning", false);
+        }
+
+        if (npcManager != null && !string.IsNullOrEmpty(currentNPCType))
+        {
+            ShowActivityDialogue(currentNPCType);
+        }
+    }
+
+    private void ShowActivityDialogue(string npcType)
+    {
+        if (uiManager == null) return;
+
+        uiManager.ToggleUI(uiManager.activityMenuFrame);
+
+        Transform holder = uiManager.activityMenuFrame.transform.Find("Holder/Dialogue");
+        if (holder != null)
+        {
+            TMPro.TextMeshProUGUI dialogueText = holder.GetComponent<TMPro.TextMeshProUGUI>();
+            if (dialogueText != null)
+            {
+                dialogueText.text = GetDialogueForNPC(npcType);
+            }
+        }
+
+        Button acceptButton = uiManager.activityMenuFrame.transform.Find("Accept")?.GetComponent<Button>();
+        Button refuseButton = uiManager.activityMenuFrame.transform.Find("Refuse")?.GetComponent<Button>();
+
+        if (acceptButton != null)
+        {
+            acceptButton.onClick.RemoveAllListeners();
+            acceptButton.onClick.AddListener(() =>
+            {
+                npcManager.OnPlayerAcceptRequest(npcType);
+            });
+        }
+
+        if (refuseButton != null)
+        {
+            refuseButton.onClick.RemoveAllListeners();
+            refuseButton.onClick.AddListener(() =>
+            {
+                uiManager.HideUI(uiManager.activityMenuFrame);
+                ResumeSpawning();
+            });
+        }
+    }
+
+    private string GetDialogueForNPC(string npcType)
+    {
+        switch (npcType)
+        {
+            case "LibraryEvent":
+                return "Hey! Could you lend me a hand arranging these books? There are so few people left to help.";
+            case "CulinaryEvent":
+                return "Ah, young one! My hands are too weary for cooking today. Would you mind assisting me in the kitchen?";
+            case "ClinicEvent":
+                return "You look like you’ve studied nursing. Please, come help us! We’re running short on staff!";
+            case "BeachEvent":
+                return "Excuse me, dear. Could you help me by the shore? The trash has started piling up.";
+            case "GardenEvent":
+                return "I could use a hand with the planting. Would you be willing to help me in the garden?";
+            default:
+                return "Hello there! Are you ready to take on this activity?";
+        }
     }
 
 
@@ -163,10 +276,10 @@ public class GameManager : MonoBehaviour
             {
                 case 1:
                 case 2:
-                case 3: return 2; // slots 3–5
+                case 3: return 2; 
                 case 4:
-                case 5: return 1; // slots 2–5
-                case 6: return 0; // slots 1–6
+                case 5: return 1; 
+                case 6: return 0;
             }
         }
         return Mathf.Clamp((totalSlots - count) / 2, 0, totalSlots - count);
@@ -180,6 +293,11 @@ public class GameManager : MonoBehaviour
 
         if (chosen == currentTrashcanSubject)
         {
+            foreach (var btn in choiceButtons)
+            {
+                btn.interactable = false;
+
+            }
             GameSpeed.Instance.SetSlowmo();
             currentTrashcan = spawnedTrashcans[0];
             AudioManager.FireSFX(AudioManager.SFXSignal.TrashOpen);
@@ -191,7 +309,9 @@ public class GameManager : MonoBehaviour
             subjectQueue.Dequeue();
 
             if (subjectQueue.Count > 0)
+            {
                 currentTrashcanSubject = subjectQueue.Peek();
+            }
 
             StartCoroutine(TransitionManager.MoveUI(
                 subjChoicesGroup, offscreenLeft, 0.5f, () =>
@@ -201,6 +321,11 @@ public class GameManager : MonoBehaviour
                 }));
 
             questionManager.GetQuestionFor(solvedSubject);
+
+            foreach (var btn in choiceButtons)
+            {
+                btn.interactable = false;
+            }
         }
         else
         {
@@ -225,6 +350,11 @@ public class GameManager : MonoBehaviour
             {
                 subjectQueue.Dequeue();
                 currentTrashcanSubject = subjectQueue.Count > 0 ? subjectQueue.Peek() : null;
+                foreach (var btn in choiceButtons)
+                {
+                    btn.interactable = true;
+
+                }
             }
 
             if (subjectQueue.Count == 0)
@@ -258,7 +388,9 @@ public class GameManager : MonoBehaviour
             currentTrashcan = null;
 
             if (questionManager != null)
+            {
                 questionManager.CancelCurrentProblem();
+            }
         }
 
         GameSpeed.Instance.SetNormal();
@@ -328,11 +460,16 @@ public class GameManager : MonoBehaviour
     public void ResumeSpawning()
     {
         rounds = 0;
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetBool("isRunning", true);
+        }
         uiManager.ToggleAllUI();
         uiManager.HideUI(uiManager.activityMenuFrame);
         gameStarted = true;
         timerManager.RestartTimer();
         Debug.Log("Spawning has resumed.");
+        GameSpeed.Instance.SetNormal();
         StartNewRound();
     }
 

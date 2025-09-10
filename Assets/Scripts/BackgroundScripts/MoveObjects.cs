@@ -38,20 +38,17 @@ public class MoveObjects : MonoBehaviour
 
     void Update()
     {
-        // Floating recycle (no need to snap exactly)
         MoveEachObjects(clouds, cloudSpeed);
         MoveEachObjects(far, farSpeed);
         MoveEachObjects(mid, midSpeed);
         MoveEachObjects(front, frontSpeed);
         MoveEachObjects(npcs, npcSpeed);
 
-        // Seamless snapping recycle
         SnapRecycle(behind, behindSpeed);
         SnapRecycle(fences, fenceSpeed);
         SnapRecycle(platforms, platformSpeed);
     }
 
-    // Simple recycle: only resets X to a preset value
     private void MoveEachObjects(ObjectSpeed[] objects, float speed)
     {
         foreach (var o in objects)
@@ -71,7 +68,6 @@ public class MoveObjects : MonoBehaviour
         }
     }
 
-    // Seamless: place recycled tile immediately after the rightmost tile
     private void SnapRecycle(ObjectSpeed[] objects, float speed)
     {
         for (int i = 0; i < objects.Length; i++)
@@ -95,7 +91,7 @@ public class MoveObjects : MonoBehaviour
                     if (!TryGetBoundsX(other.obj, out _, out float r, out _, out _)) continue;
                     if (r > maxRight) maxRight = r;
                 }
-                if (float.IsNegativeInfinity(maxRight)) maxRight = right; // fallback
+                if (float.IsNegativeInfinity(maxRight)) maxRight = right; 
 
                 float newCenterX = maxRight + halfWidth + seamFix;
                 var pos = o.obj.transform.position;

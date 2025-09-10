@@ -12,11 +12,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
 
-    [Header("Mobile Buttons (assign in Inspector)")]
+    [Header("Mobile Buttons")]
     public Button upButton;
     public Button downButton;
     public Button leftButton;
     public Button rightButton;
+
+    private Vector3 initialScale;
 
     // Mobile input values
     private float mobileX = 0f;
@@ -29,6 +31,9 @@ public class PlayerMovement : MonoBehaviour
             body = GetComponent<Rigidbody2D>();
         }
         body.gravityScale = 0f; // Disable gravity for top-down movement
+
+        initialScale = transform.localScale;
+
 
         // Add event listeners if buttons are assigned
         if (upButton != null) AddEventTriggers(upButton, () => MoveUp(true), () => MoveUp(false));
@@ -73,13 +78,21 @@ public class PlayerMovement : MonoBehaviour
         {
             if (speed <= 0) { return; }
             animator.SetBool("isRunning", true);
-            transform.localScale = new Vector3(Mathf.Sign(transform.localScale.x) * 0.6f, 0.6f, 0.6f);
+            transform.localScale = new Vector3(
+                Mathf.Sign(transform.localScale.x) * Mathf.Abs(initialScale.x),
+                initialScale.y,
+                initialScale.z
+            );
         }
         else
         {
             if (speed <= 0) { return; }
             animator.SetBool("isRunning", false);
-            transform.localScale = new Vector3(Mathf.Sign(transform.localScale.x) * 0.45f, 0.45f, 0.45f);
+            transform.localScale = new Vector3(
+                Mathf.Sign(transform.localScale.x) * Mathf.Abs(initialScale.x),
+                initialScale.y,
+                initialScale.z
+            );
         }
     }
 
