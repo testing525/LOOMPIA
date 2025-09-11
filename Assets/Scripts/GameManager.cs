@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     [Header("Other References")]
     public QuestionManager questionManager;
     public TimerManager timerManager;
-    public ScoreManager scoreManager;
     public UIManager uiManager;
     public NotifyScript notifyScript;
     public PlayerAutoMove playerScript;
@@ -330,7 +329,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("Wrong subject guess!");
-            scoreManager.ResetStreak();
+            ScoreManager.instance.ResetStreak();
             HealthManager.Instance.DecreaseHP();
             AudioManager.FireSFX(AudioManager.SFXSignal.Wrong);
 
@@ -415,7 +414,7 @@ public class GameManager : MonoBehaviour
 
         gameStarted = false;
         rounds = 0;
-        scoreManager.Restart();
+        ScoreManager.instance.Restart();
         AudioManager.FireMusic(AudioManager.MusicSignal.StartMenu);
 
         foreach (var trashcan in spawnedTrashcans)

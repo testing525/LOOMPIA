@@ -7,7 +7,6 @@ public class QuestionManager : MonoBehaviour
 {
     public GameManager gameManager;
     public TimerManager timeManager;
-    public ScoreManager scoreManager;
     public UIButtonFlyer flyerManager;
     public PlayerAutoMove playerScript;
 
@@ -103,7 +102,7 @@ public class QuestionManager : MonoBehaviour
             AudioManager.FireSFX(AudioManager.SFXSignal.Correct);
 
             timeManager.AddTime(5);
-            scoreManager.AddScore();
+            ScoreManager.instance.AddScore();
             DifficultyManager.CorrectAnswer();
             Button selectedButton = problemButtons[index];
             selectedButton.gameObject.SetActive(false);
@@ -146,7 +145,7 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("Wrong answer!");
             HealthManager.Instance.DecreaseHP();
-            scoreManager.ResetStreak();
+            ScoreManager.instance.ResetStreak();
             AudioManager.FireSFX(AudioManager.SFXSignal.Wrong);
             DifficultyManager.WrongAnswerOrTimeout();
 

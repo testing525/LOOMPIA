@@ -39,5 +39,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MinigameTutorial.unity
     guid: bcdf1302cd248e8498a01dccf2cf5afc
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 660f6460de26e1c45adb9c28a7f74755, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 2a9afb093ee8aa24388e340f1f80e035, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 52fbf8a07aec43d4b957f82d87f6bc5f, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 87b64c0032223d94881c1e28d55a9fac, type: 2}
   m_UseUCBPForAssetBundles: 0

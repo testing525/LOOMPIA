@@ -10,7 +10,7 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI highscoreText; 
     public ScoreStreakFX scoreStreakFX;
 
-    private static ScoreManager instance;
+    public static ScoreManager instance;
 
     private int currentScore = 0;
     private int currentStreak = 0;
